@@ -1,0 +1,14 @@
+.Hygienic{
+    display: block;
+    color: #757575;
+    margin: 4px 0 0;
+    font-size: 1.5rem;
+    line-height: 29px;
+}
+.BestOffer{
+    font-weight: 700;
+    font-size: 32px;
+    line-height: 48px;
+    margin: 0;
+    color: #212121;
+}
