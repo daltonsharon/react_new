@@ -8,15 +8,17 @@ import ImgCarousel from './ImgCarousel';
 import Navbar from './Navbar';
 import './Profile.css'
 
- function Profile() {
+ function Profile({locationDataFromApp}) {
     return (
      <div>
          <div className='Profile'>
              <div className='Profileliner'>
-         <Navbar/>
+         <Navbar locationFromHome = {locationDataFromApp}/>
          </div>
          </div>
          <AllCategories/>
+         <br></br>
+         <br/>
          <ImgCarousel/>
          <AdsCategories/>
          <Footer/>

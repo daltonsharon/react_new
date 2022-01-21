@@ -7,6 +7,7 @@ import axios from "axios";
 
 function App() {
   const[locationData, setLocationData] = useState([]);
+  const [loactionObject,setLocationObject] = useState({})
   const getMapData = async() => {
     let getData = await axios.get("https://rcz-backend-arvinth.herokuapp.com/api/mapData",{
   params:{
@@ -16,7 +17,7 @@ function App() {
   
   
     });
-    console.log(await getData.data);
+    setLocationObject(await getData.data);
   }
   
   
@@ -44,7 +45,7 @@ function App() {
 
     <div >
       
-  <Profile/>
+  <Profile locationDataFromApp ={loactionObject} />
   {locationData}
 </div>
   );

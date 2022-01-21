@@ -12,8 +12,15 @@ const { Search } = Input;
 
 
 
-function Navbar() {
+function Navbar({locationFromHome}) {
 
+    const [locationDropDownValues,setLocationDropDownValues] = useState([]) 
+    const [locationObjectWithValues,setLocationObjectWithValues] = useState ({})
+    useEffect(() => {
+        
+        setLocationObjectWithValues(locationFromHome)
+
+    },[locationFromHome])
     
     function handleMenuClick(e) {
         message.info('Click on menu item.');
@@ -21,15 +28,23 @@ function Navbar() {
     }
     const menu = (
         <Menu onClick={handleMenuClick}>
-            <Menu.Item key="1" icon={<UserOutlined />}>
-                Chennai
-            </Menu.Item>
+            {(Object.keys(locationObjectWithValues).length >0 ) ? (locationObjectWithValues.results.map((e,index)=>(
+               <Menu.Item key={index} icon={<UserOutlined />}>
+                {e.formatted_address}
+           </Menu.Item>
+           )))
+            :
+           (
+               <div></div>
+           )
+}
+            {/*
             <Menu.Item key="2" icon={<UserOutlined />}>
                 Tirupur
             </Menu.Item>
             <Menu.Item key="3" icon={<UserOutlined />}>
                 Erode
-            </Menu.Item>
+    </Menu.Item>*/}
         </Menu>
 
          
@@ -49,9 +64,9 @@ function Navbar() {
             </Row>
 
 
-            <Row style={{ marginLeft: "39rem", marginTop: "5rem" }}>
+            <Row style={{ display:"flex",marginLeft: "39rem", marginTop: "5rem" }}>
                 <Col  >
-                    <Breadcrumb style={{ color: "white" }}>
+                    <Breadcrumb style={{ display:"flex",color: "white" }}>
 
                         <Breadcrumb.Item >
                             Home
