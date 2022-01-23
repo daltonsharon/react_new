@@ -50,6 +50,7 @@ function App() {
       },[])
 
   return (
+    
       <Router>
     <div >
     
@@ -59,7 +60,7 @@ function App() {
           <Route path="/Profile" exact>
           <Profile locationDataFromApp ={loactionObject} />
           </Route>
-
+         
           <Route path="/Details/:id" exact>
           <Details/>
           </Route>

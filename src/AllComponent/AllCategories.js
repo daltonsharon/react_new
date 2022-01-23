@@ -9,30 +9,29 @@ import { Link } from 'react-router-dom';
 
 function AllCategories() {
 
-    const [dataAllCategory, setDataAllCategory] = useState([])
-    const [categoryWithoutDups, setCategoryWithoutDups] = useState([])
+    const [dataCategory, setDataCategory] = useState([]);
+    const [categorieswithoutDups, setCategorieswithoutDups] =useState([]);
 
     useEffect(() => {
-
-        let getAllCategoryData = async () => {
-
+        let getCatagoryData = async () => {
             let data = await axios.get("https://rcz-backend-arvinth.herokuapp.com/api/getGenieRecordsByAllCategories")
-            setDataAllCategory(await data.data)
-            debugger
-            let withoutDup = []
-            let categoryWithout = await data.data.map(e => {
-                if (!withoutDup.includes(e.mainCategory)) {
-                    if (e.mainCategory != undefined) {
+            setDataCategory(await data.data);
+            let colWithoutDup =[];
+            let categoriesWithoutDuplicates = await data.data.map(e=>{
 
-                        withoutDup.push(e.mainCategory)
-                    }
-                }
-            })
-            setCategoryWithoutDups(withoutDup)
-        }
-        getAllCategoryData()
+             if(!colWithoutDup.includes(e.mainCategory)){
+                 if(e.mainCategory != undefined){
+                    colWithoutDup.push(e.mainCategory);
+                 }
+                
+
+             }
+
+            });
+            setCategorieswithoutDups(colWithoutDup)
+        };
+           getCatagoryData();
     }, [])
-
 
 
     let icons = {
@@ -54,16 +53,18 @@ function AllCategories() {
             <Col lg={8}>
                 <Row style={{ backgroundColor: "rgb(237 ,234 ,234)", position: "relative", marginTop: "-8rem" }}>
 
-                    {categoryWithoutDups.map(e => (
-                        
-                        <Col lg={2} style={{ height: "fit-content", marginTop: "1.5rem" }}  >
-                           <Link to={"/Details/${e}"} >
-                           <Avatar size={40} src={icons[e]} />
-                            <p>{e}</p>
+                    {categorieswithoutDups.map((e) => (
+
+                        <Col style={{ height: "fit-content" }} lg={2}>
+                            <Link to={`/details/${e}`}>
+                                <Avatar size={50} src={icons[e]} />
+                                <p>{e}</p>
                             </Link>
                         </Col>
-                        
+
                     ))}
+                        
+                
                 </Row>
             </Col>
         </Row>

@@ -45,31 +45,35 @@ function a11yProps(index) {
 export default function VerticalTabs() {
   const [value, setValue] = React.useState(0);
 
-  const [categoriesdata, setCategoriesData] = useState([])
-  const [removeDups, setRemoveDups] = useState([])
-
+  const [categoriestabledata, setCategoriestabledata] = useState([]);
+  const [removeDups, setRemoveDups] = useState([]);
   useEffect(() => {
 
     let getData = async () => {
       let dataGot = await axios.get("https://rcz-backend-arvinth.herokuapp.com/api/getGenieRecordsByAllCategories")
-
-      let toRemoveDups = await dataGot.data.reduce((storageArray,e,index)=>{
-        if(!storageArray.includes(e.mainCategory)){
-            storageArray.push(e.mainCategory)
+      let toRemoveDups = await dataGot.data.reduce((storageArray, e, index) => {
+        if (!storageArray.includes(e.mainCategory)) {
+          storageArray.push(e.mainCategory)
         }
+
         return storageArray
-        },[])
-        setRemoveDups(toRemoveDups)
-        setCategoriesData(await dataGot.data)
-        }
-        
-        getData()
-        },[])
 
-  
-    const handleChange = (event, newValue) => {
-      setValue(newValue);
-    };
+      }, [])
+      let toFilter = decodeURI(window.location.href.split("/")[window.location.href.split("/").length - 1])
+      setRemoveDups(toRemoveDups.filter(e => {
+        return e == toFilter
+      }))
+      setCategoriestabledata(await dataGot.data)
+
+    }
+
+    getData();
+
+  }, [])
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <Box
@@ -88,6 +92,7 @@ export default function VerticalTabs() {
         {removeDups.length ? removeDups.map((e, index) => (
 
           <Tab label={e} {...a11yProps(index)} />
+
         )) : (<div></div>)}
 
         {/* <Tab label="Item Two" {...a11yProps(1)} />
