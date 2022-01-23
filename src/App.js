@@ -3,7 +3,15 @@ import './App.css'
 import{row,col} from 'reactstrap'
 import { useEffect,useState } from 'react';
 import Profile from './AllComponent/Profile';
+
 import axios from "axios";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import Details from './Details/Details';
 
 function App() {
   const[locationData, setLocationData] = useState([]);
@@ -42,12 +50,24 @@ function App() {
       },[])
 
   return (
-
+      <Router>
     <div >
-      
-  <Profile locationDataFromApp ={loactionObject} />
-  {locationData}
+    
+    <Switch>
+
+    
+          <Route path="/Profile" exact>
+          <Profile locationDataFromApp ={loactionObject} />
+          </Route>
+
+          <Route path="/Details/:id" exact>
+          <Details/>
+          </Route>
+        </Switch>
+        
+        {locationData}
 </div>
+</Router>
   );
 }
 
