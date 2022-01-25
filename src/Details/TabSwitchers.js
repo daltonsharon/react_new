@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import { useEffect } from 'react';
 import axios from 'axios';
 import { useState } from 'react';
+import CardFile from './CardFile';
+import { Button } from 'antd';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -47,6 +49,7 @@ export default function VerticalTabs() {
 
   const [categoriestabledata, setCategoriestabledata] = useState([]);
   const [removeDups, setRemoveDups] = useState([]);
+  const [contentData,setContentData] =useState([])
   useEffect(() => {
 
     let getData = async () => {
@@ -57,12 +60,17 @@ export default function VerticalTabs() {
         }
 
         return storageArray
-
+ 
       }, [])
       let toFilter = decodeURI(window.location.href.split("/")[window.location.href.split("/").length - 1])
       setRemoveDups(toRemoveDups.filter(e => {
         return e == toFilter
       }))
+      let contentToFilter = await dataGot.data.filter(e=>{
+
+return e.mainCategory == toFilter  
+      })
+      setContentData(contentToFilter)
       setCategoriestabledata(await dataGot.data)
 
     }
@@ -102,10 +110,24 @@ export default function VerticalTabs() {
         <Tab label="Item Six" {...a11yProps(5)} />
         <Tab label="Item Seven" {...a11yProps(6)} /> */}
       </Tabs>
-      <TabPanel value={value} index={0}>
-        Item One
+      
+      <TabPanel  value={value} index={0}>
+       {contentData.map(e=>(
+        <CardFile jobFromData ={e.job} priceFromData ={e.price} ratingFromData ={e.rating} detailsFromData ={e.description}/>
+        ))}
+        <Button ghost>Default</Button>
+    <Button type="dashed" ghost>
+      Dashed
+    </Button>
+    <div className="site-button-ghost-wrapper">
+    <Button type="primary" ghost>
+      Primary
+    </Button>
+    </div>
       </TabPanel>
-      <TabPanel value={value} index={1}>
+    
+
+      {/* <TabPanel value={value} index={1}>
         Item Two
       </TabPanel>
       <TabPanel value={value} index={2}>
@@ -122,7 +144,8 @@ export default function VerticalTabs() {
       </TabPanel>
       <TabPanel value={value} index={6}>
         Item Seven
-      </TabPanel>
+      </TabPanel> */}
+      
     </Box>
   );
 }
