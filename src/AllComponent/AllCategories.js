@@ -4,6 +4,7 @@ import { Avatar, Image } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import './Categories.css'
 import axios from 'axios';
+import { Spin, Alert } from 'antd';
 import { Link } from 'react-router-dom';
 
 
@@ -53,7 +54,7 @@ function AllCategories() {
             <Col lg={8}>
                 <Row style={{ backgroundColor: "rgb(237 ,234 ,234)", position: "relative", marginTop: "-8rem" }}>
 
-                    {categorieswithoutDups.map((e) => (
+                    {categorieswithoutDups.length ? (categorieswithoutDups.map((e) => (
 
                         <Col style={{ height: "fit-content" }} lg={2}>
                             <Link to={`/details/${e}`}>
@@ -62,7 +63,7 @@ function AllCategories() {
                             </Link>
                         </Col>
 
-                    ))}
+                    ))) : (<Spin style={{marginLeft:"25rem",width:"6rem",height:"6rem"}} tip="Loading..."><Alert style={{width:"6rem",height:"6rem"}}>Loading...</Alert></Spin> )}
                         
                 
                 </Row>

@@ -9,6 +9,8 @@ import axios from 'axios';
 import { useState } from 'react';
 import CardFile from './CardFile';
 import { Button } from 'antd';
+import { Spin, Alert } from 'antd';
+import Switcherfooter from '../AllComponent/Switcherfooter';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -50,6 +52,7 @@ export default function VerticalTabs() {
   const [categoriestabledata, setCategoriestabledata] = useState([]);
   const [removeDups, setRemoveDups] = useState([]);
   const [contentData,setContentData] =useState([])
+  const [calculater,setCalculater]=useState([])
   useEffect(() => {
 
     let getData = async () => {
@@ -79,11 +82,27 @@ return e.mainCategory == toFilter
 
   }, [])
 
+  const handleCh = (jobFromData,priceFromData,ratingFromData,detailsFromData)=>{
+
+    let newObj = calculater
+    if(newObj[jobFromData]){
+      newObj[jobFromData] += parseInt(priceFromData)
+    }else{
+      newObj[jobFromData] = parseInt(priceFromData)
+    }
+    setCalculater(newObj)
+    console.log(calculater)
+  }
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
   };
 
   return (
+    <>
+    <div className='loading' style={{display:"flex",marginLeft:"5%"}}>
+    {contentData.length ?(
+      <>
     <Box
       sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: 450, width: 200 }}
     >
@@ -113,39 +132,30 @@ return e.mainCategory == toFilter
       
       <TabPanel  value={value} index={0}>
        {contentData.map(e=>(
-        <CardFile jobFromData ={e.job} priceFromData ={e.price} ratingFromData ={e.rating} detailsFromData ={e.description}/>
+        <CardFile calSet={handleCh} jobFromData ={e.job} priceFromData ={e.price} ratingFromData ={e.rating} detailsFromData ={e.description}/>
         ))}
         <Button ghost>Default</Button>
     <Button type="dashed" ghost>
       Dashed
     </Button>
     <div className="site-button-ghost-wrapper">
-    <Button type="primary" ghost>
-      Primary
-    </Button>
+    
     </div>
       </TabPanel>
     
 
-      {/* <TabPanel value={value} index={1}>
-        Item Two
-      </TabPanel>
-      <TabPanel value={value} index={2}>
-        Item Three
-      </TabPanel>
-      <TabPanel value={value} index={3}>
-        Item Four
-      </TabPanel>
-      <TabPanel value={value} index={4}>
-        Item Five
-      </TabPanel>
-      <TabPanel value={value} index={5}>
-        Item Six
-      </TabPanel>
-      <TabPanel value={value} index={6}>
-        Item Seven
-      </TabPanel> */}
-      
+     
+
+
+
     </Box>
+    <div style={{display:"flex",justifyContent:"start"}}>
+    <Switcherfooter listAddIteams={"Amount"}/>  
+    </div>   
+
+    </>
+    ): (<Spin style={{display:"flex",marginTop:"15rem",marginLeft:"35rem",height:"15rem",width:"15rem"}} tip="Loading..."><Alert/></Spin>)}
+    </div>  
+    </>    
   );
 }
